@@ -41,23 +41,27 @@ function get_field_set_and_update_page(param) {
         var field_set=data.nodes[i].node.field_cond_id_value;
         var field_set_value="";
         if($(field_set).length !== 0) {
-            //check element tag
-          if(field_set.indexOf("[name=") !== -1) {
-            field_set_value=$(field_set+':checked').val();
-          } else if(field_set.indexOf("select") !== -1) {
-            field_set_value=$(field_set+':selected').val();
-          } else {
-            field_set_value=$(field_set).val();
+          switch($(field_set).get(0).tagName) {
+            case "INPUT":
+              if ($(field_set).attr('type') == "radio") {
+                field_set_value=$(field_set+':checked').val();
+              } else {
+                field_set_value=$(field_set).val();   
+              }
+              break;
+            case "SELECT":
+              field_set_value=$(field_set+':selected').val();
+              break;
           }
         }
         
-        field_set_value=field_set_value.replace(' ', '+');
         field_set_value=set_if_undefined(field_set_value,"null");
         //console.log(field_set+':'+field_set_value);
         json_content_data[field_set]=field_set_value;
       }
       
       var json_content_url="data/content.json";
+
       $.getJSON(json_content_url, json_content_data, function(data) {
         var html_content="";  
         for(var i=0;i<data.nodes.length;i++) {
