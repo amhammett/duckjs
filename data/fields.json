@@ -2,23 +2,19 @@
     "nodes":[
         {
             "node":{
-                "field_cond_id_value":"input[@name='genderid']"
+                "field_cond_id_value":"input[name='gender']"
             }
         },{
             "node":{
-                "field_cond_id_value":"#fname"
+                "field_cond_id_value":"#name"
             }
         },{
             "node":{
-                "field_cond_id_value":"#dob_1"
+                "field_cond_id_value":"#date_of_birth"
             }
         },{
             "node":{
-                "field_cond_id_value":"input[@name='familyDiscount']"
-            }
-        },{
-            "node":{
-                "field_cond_id_value":"input[@name='genderid']"
+                "field_cond_id_value":"input[name='has_existing_policy']"
             }
         }
     ]

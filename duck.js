@@ -13,7 +13,6 @@ duckjs_promo used to append dynamic content
 
 var promo_content_id = '#duckjs_promo';
 var s_pageName = '';
-var html_content ='';
 
 if(typeof $ != 'undefined') {
   $(function() {
@@ -25,11 +24,10 @@ if(typeof $ != 'undefined') {
 
 function get_requestor_page_vars() {
   var page_name_param="";
-  if (typeof s_pageName != 'undefined') {s_pageName="sample";}
+  s_pageName=set_if_undefined(s_pageName,"sample");
   page_name_param = "?pagename="+s_pageName;
 
   get_field_set_and_update_page(page_name_param);
-
 }
 
 function get_field_set_and_update_page(param) {
@@ -37,23 +35,30 @@ function get_field_set_and_update_page(param) {
     
     $.getJSON(json_field_url, null, function(data) {
       //console.log("success");
-      //console.log('len: '+data.nodes.length);
-      var field_param_set="?";
-      
+      var json_content_data={};
+
       for(var i=0;i<data.nodes.length;i++) {
         var field_set=data.nodes[i].node.field_cond_id_value;
+        var field_set_value="";
         if($(field_set).length !== 0) {
-          field_param_set+=field_set+'='+$(field_set).val()+'&';
+            //check element tag
+          if(field_set.indexOf("[name=") !== -1) {
+            field_set_value=$(field_set+':checked').val();
+          } else if(field_set.indexOf("select") !== -1) {
+            field_set_value=$(field_set+':selected').val();
+          } else {
+            field_set_value=$(field_set).val();
+          }
         }
+        
+        field_set_value=field_set_value.replace(' ', '+');
+        field_set_value=set_if_undefined(field_set_value,"null");
+        //console.log(field_set+':'+field_set_value);
+        json_content_data[field_set]=field_set_value;
       }
       
-      field_param_set=(field_param_set=="?"?"":field_param_set.slice(0, -1));
-      
-      //todo: add sample form to page. else this is empty
-      //console.log(field_param_set);
-      
-      var json_content_url="data/content.json"+field_param_set;
-      $.getJSON(json_content_url, null, function(data) {
+      var json_content_url="data/content.json";
+      $.getJSON(json_content_url, json_content_data, function(data) {
         var html_content="";  
         for(var i=0;i<data.nodes.length;i++) {
           html_content+="<div id=\""+s_pageName+'-'+'promo-'+i+"\" class=\"promo\">"+data.nodes[i].node.Body+"</div>";
@@ -61,6 +66,13 @@ function get_field_set_and_update_page(param) {
         update_content(html_content);
       });
     });
+}
+
+function set_if_undefined(value,replacement) {
+  if (typeof value == 'undefined') {
+    value=replacement;
+  }
+  return value;
 }
 
 function update_content(html_content) {

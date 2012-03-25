@@ -4,8 +4,69 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>duck.js - dynamically updated content kit</title>
+  
+  <style>
+    #sample-form-wrapper {width:50%; float:left;}
+    #duckjs_promo {float:left; padding:0 50px;}
+  </style>
 </head>
 <body>
+<div id="sample-form-wrapper">
+  <form id="sample-questions-set1">
+    <fieldset>
+      <legend>Your Details</legend>
+      <ol>
+        <li>
+          <label for="name">Name</label>
+          <input id="name" type="text" data-placeholder="name" autofocus />
+        </li>
+        <li>
+          <label for="gender">Gender</label>
+          <ol>
+            <li>
+              <label for="gender_male">male</label>
+              <input id="gender_male" name="gender" type="radio" value="male" />
+            </li>
+            <li>
+              <label for="gender_female">female</label>
+              <input id="gender_female" name="gender" type="radio" value="female" />
+            </li>
+          </ol>
+        </li>
+        <li>
+          <label for="date_of_birth">Date of Birth</label>
+          <input id="date_of_birth" type="text" data-placeholder="31/12/1975"/>
+        </li>
+      </ol>
+    </fieldset>
+    <fieldset>
+      <legend>Contact</legend>
+      <ol>
+        <li>
+          <label for="email">Email</label>
+          <input id="email" type="email" data-placeholder="example@domain.com"/>
+        </li>
+        <li>
+          <label for="phone">Phone</label>
+          <input id="phone" type="phone" data-placeholder="02 0000 0000"/>
+        </li>
+      </ol>
+    </fieldset>
+    <fieldset>
+      <legend>Policy Details</legend>
+          <label for="is_ok_to_email">Do you have an existing policy?</label>
+      <ol>
+        <li>
+          <label for="has_existing">yes</label>
+          <input id="has_existing" name="has_existing_policy" type="radio" value="yes" />
+        </li>
+        <li>
+          <label for="no_existing">no</label>
+          <input id="no_existing" name="has_existing_policy" type="radio" value="no" />
+        </li>
+      </ol>
+    </fieldset>
+</div>
 
 <div id="duckjs_promo"></div>
 
@@ -15,6 +76,15 @@
 </script>
 <!-- this jquery call is slow but does not require the files to be kept in project -->
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script>
+//set defaults
+$('#name').val('Sterling Archer');
+$('#gender_female').attr('checked', 'checked');
+$('#date_of_birth').val('17/09/1973');
+$('#email').val('s.archer@isis.com');
+$('#phone').val('02 0000 0000');
+$('#has_existing').attr('checked', 'checked');
+</script>
 <script type="text/javascript" src="duck.js"></script>
 	</body>
 </html>
